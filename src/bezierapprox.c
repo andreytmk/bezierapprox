@@ -22,22 +22,22 @@ typedef struct _BezierControlsStackEntry {
     int lastIdx;
 } BezierControlsStackEntry;
 
-inline double bValue(int j, double t) {
+static inline double bValue(int j, double t) {
     return B3[j] * pow(1 - t, 3 - j) * pow(t, j);
 }
 
-inline BezierApproxPoint substructPoint(BezierApproxPoint a, BezierApproxPoint b) {
+static inline BezierApproxPoint substructPoint(BezierApproxPoint a, BezierApproxPoint b) {
     BezierApproxPoint c;
     c.x = a.x - b.x;
     c.y = a.y - b.y;
     return c;
 }
 
-inline double getPointNorm(BezierApproxPoint *a) {
+static inline double getPointNorm(BezierApproxPoint *a) {
     return sqrt(a->x * a->x + a->y * a->y);
 }
 
-inline int normalizePoint(BezierApproxPoint *a) {
+static inline int normalizePoint(BezierApproxPoint *a) {
     double norm = getPointNorm(a);
     if (fabs(norm) < EPS_ZERO) {
         return BEZIER_APPROX_ARGUMENTS_ERROR;
@@ -47,7 +47,7 @@ inline int normalizePoint(BezierApproxPoint *a) {
     return BEZIER_APPROX_OK;
 }
 
-inline double* initTdist(
+static inline double* initTdist(
     const BezierApproxPoint points[],
     int pointsSize
 ) {
@@ -65,7 +65,7 @@ inline double* initTdist(
     return tDist;
 }
 
-inline double getTValue(
+static inline double getTValue(
     const double tDist[],
     int idx,
     int firstIdx,
@@ -75,7 +75,7 @@ inline double getTValue(
     return (tDist[idx] - tDist[firstIdx]) / (tDist[lastIdx] - tDist[firstIdx]);
 }
 
-inline void getMaxDistance(
+static inline void getMaxDistance(
     const BezierApproxCurve3Controls controls,
     const BezierApproxPoint points[],
     const double tDist[],
@@ -101,7 +101,7 @@ inline void getMaxDistance(
     assert(*maxDistIdx <= lastIdx);
 }
 
-int inline bezierApproxByOneCurveByInitVectors(
+static int inline bezierApproxByOneCurveByInitVectors(
     const BezierApproxPoint points[],
     int firstPointIndex,
     int lastPointIndex,

@@ -34,7 +34,7 @@ const BezierApproxPoint points[] = {
     { 350.00, 50.00 },
 };
 
-inline bool epsNear(double a, double b) {
+static inline bool epsNear(double a, double b) {
     return fabs(a - b) < EPS;
 }
 
@@ -74,7 +74,7 @@ cleanup:
     return success;
 }
 
-inline bool checkOnePoint(
+static inline bool checkOnePoint(
     BezierApproxPoint* points,
     BezierApproxCurve3Controls* controlsBuffer,
     BezierApproxPoint p1
@@ -155,7 +155,7 @@ cleanup:
     return success;
 }
 
-inline bool checkTwoPoints(
+static inline bool checkTwoPoints(
     BezierApproxPoint* points,
     BezierApproxCurve3Controls* controlsBuffer,
     BezierApproxPoint p1,
@@ -235,7 +235,7 @@ cleanup:
     return success;
 }
 
-inline bool checkPointsArray(
+static inline bool checkPointsArray(
     BezierApproxPoint* points,
     int pointsSize,
     BezierApproxCurve3Controls* controlsBuffer,
