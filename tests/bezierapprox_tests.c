@@ -38,6 +38,10 @@ static inline bool epsNear(double a, double b) {
     return fabs(a - b) < EPS;
 }
 
+static inline int random(int min, int max) {
+    return min + rand() / (RAND_MAX / (max - min + 1) + 1);
+}
+
 bool test_bezierApproxGetCurveValue() {
     BezierApproxCurve3Controls controls = { P0, P1, P2, P3 };
 
@@ -352,14 +356,14 @@ bool runRandomTest(
         goto cleanup;
     }
 
-    points[0].x = rand() * RND_STEP / RAND_MAX;
-    points[0].y = rand() * RND_STEP / RAND_MAX;
+    points[0].x = random(0, RND_STEP);
+    points[0].y = random(0, RND_STEP);
     for (int i = 1; i < pointsSize; ++i) {
-        int dx = rand() * RND_STEP / RAND_MAX;
-        int dy = rand()* RND_STEP / RAND_MAX;
+        int dx = random(0, RND_STEP);
+        int dy = random(0, RND_STEP);
         while (dx == 0 && dy == 0) {
-            dx = rand() * RND_STEP / RAND_MAX;
-            dy = rand() * RND_STEP / RAND_MAX;
+            dx = random(0, RND_STEP);
+            dy = random(0, RND_STEP);
         }
         points[i].x = points[i - 1].x + dx;
         points[i].y = points[i - 1].y + dy;
@@ -393,7 +397,7 @@ bool test_randomPoints() {
     success &= runRandomTest(3);
     success &= runRandomTest(4);
     for (int t = 0; t < RANDOM_TEST_COUNT; ++t) {
-        int pointsCount = (int)(rand() * (MAX_POINTS - 4) / RAND_MAX) + 4;
+        int pointsCount = random(4, MAX_POINTS);
         success &= runRandomTest(pointsCount);
         if (!success) {
             printf("Failed t=%d\n", t);
