@@ -18,6 +18,11 @@ target_include_directories(bezierapproxlib PRIVATE include)
 
 target_compile_definitions(bezierapproxlib PRIVATE BEZIERAPPROXLIB_COMPILING=1)
 
+find_library(MATH_LIBRARY m)
+if(MATH_LIBRARY)
+    target_link_libraries(bezierapproxlib PUBLIC ${MATH_LIBRARY})
+endif()
+
 install(TARGETS bezierapproxlib
     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
     PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
