@@ -34,8 +34,12 @@ const BezierApproxPoint points[] = {
     { 350.00, 50.00 },
 };
 
-inline bool epsNear(double a, double b) {
+static inline bool epsNear(double a, double b) {
     return fabs(a - b) < EPS;
+}
+
+static inline int bezierRandom(int min, int max) {
+    return min + rand() / (RAND_MAX / (max - min + 1) + 1);
 }
 
 bool test_bezierApproxGetCurveValue() {
@@ -74,7 +78,7 @@ cleanup:
     return success;
 }
 
-inline bool checkOnePoint(
+static inline bool checkOnePoint(
     BezierApproxPoint* points,
     BezierApproxCurve3Controls* controlsBuffer,
     BezierApproxPoint p1
@@ -155,7 +159,7 @@ cleanup:
     return success;
 }
 
-inline bool checkTwoPoints(
+static inline bool checkTwoPoints(
     BezierApproxPoint* points,
     BezierApproxCurve3Controls* controlsBuffer,
     BezierApproxPoint p1,
@@ -235,7 +239,7 @@ cleanup:
     return success;
 }
 
-inline bool checkPointsArray(
+static inline bool checkPointsArray(
     BezierApproxPoint* points,
     int pointsSize,
     BezierApproxCurve3Controls* controlsBuffer,
@@ -352,14 +356,14 @@ bool runRandomTest(
         goto cleanup;
     }
 
-    points[0].x = rand() * RND_STEP / RAND_MAX;
-    points[0].y = rand() * RND_STEP / RAND_MAX;
+    points[0].x = bezierRandom(0, RND_STEP);
+    points[0].y = bezierRandom(0, RND_STEP);
     for (int i = 1; i < pointsSize; ++i) {
-        int dx = rand() * RND_STEP / RAND_MAX;
-        int dy = rand()* RND_STEP / RAND_MAX;
+        int dx = bezierRandom(0, RND_STEP);
+        int dy = bezierRandom(0, RND_STEP);
         while (dx == 0 && dy == 0) {
-            dx = rand() * RND_STEP / RAND_MAX;
-            dy = rand() * RND_STEP / RAND_MAX;
+            dx = bezierRandom(0, RND_STEP);
+            dy = bezierRandom(0, RND_STEP);
         }
         points[i].x = points[i - 1].x + dx;
         points[i].y = points[i - 1].y + dy;
@@ -393,7 +397,7 @@ bool test_randomPoints() {
     success &= runRandomTest(3);
     success &= runRandomTest(4);
     for (int t = 0; t < RANDOM_TEST_COUNT; ++t) {
-        int pointsCount = (int)(rand() * (MAX_POINTS - 4) / RAND_MAX) + 4;
+        int pointsCount = bezierRandom(4, MAX_POINTS);
         success &= runRandomTest(pointsCount);
         if (!success) {
             printf("Failed t=%d\n", t);

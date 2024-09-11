@@ -3,6 +3,7 @@
 
 import ctypes
 import os
+import platform
 from ctypes import POINTER, Structure, byref, c_double, c_int
 
 
@@ -23,6 +24,8 @@ class BezierApproxCurve3Controls(Structure):
 
 work_dir = os.path.dirname(os.path.realpath(__file__))
 bezier_lib_path = os.path.join(work_dir, 'bezierapproxlib.dll')
+if platform.system() == 'Linux':
+    bezier_lib_path = os.path.join(work_dir, 'libbezierapproxlib.so')
 
 # Load the C library
 # Replace 'bezier' with the actual name of your shared library
